@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Typography, TextField, Button, Paper, MenuItem } from '@mui/material';
@@ -20,29 +19,51 @@ const SessionFormPage: React.FC = () => {
   });
 
   useEffect(() => {
-    const fetchExercises = async () => {
-      const data = await getExercises();
-      setExercises(data);
-      if (data.length > 0) {
-        setSession(prev => ({ ...prev, exerciseId: data[0].id }));
+    const fetchInitialData = async () => {
+      const exerciseData = await getExercises();
+      setExercises(exerciseData);
+
+      if (id) {
+        // Editing an existing session
+        const sessionData = await getSession(id);
+        if (sessionData) {
+          setSession(sessionData);
+        }
+      } else if (exerciseData.length > 0) {
+        // Creating a new session, pre-fill with the first exercise's defaults
+        const defaultExercise = exerciseData[0];
+        setSession(prev => ({
+          ...prev,
+          exerciseId: defaultExercise.id,
+          series: defaultExercise.defaultSeries,
+          reps: defaultExercise.defaultReps,
+          repsDuration: defaultExercise.defaultRepsDuration,
+          weight: defaultExercise.defaultWeight,
+        }));
       }
     };
-    fetchExercises();
 
-    if (id) {
-      const fetchSession = async () => {
-        const data = await getSession(id);
-        if (data) {
-          setSession(data);
-        }
-      };
-      fetchSession();
-    }
+    fetchInitialData();
   }, [id]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setSession(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'exerciseId') {
+      const selectedExercise = exercises.find(ex => ex.id === value);
+      if (selectedExercise) {
+        setSession(prev => ({
+          ...prev,
+          exerciseId: value,
+          series: selectedExercise.defaultSeries,
+          reps: selectedExercise.defaultReps,
+          repsDuration: selectedExercise.defaultRepsDuration,
+          weight: selectedExercise.defaultWeight,
+        }));
+      }
+    } else {
+      setSession(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
