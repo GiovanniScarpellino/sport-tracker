@@ -1,9 +1,19 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button, List, ListItem, ListItemText } from '@mui/material';
+import { Typography, Button, Table } from 'antd';
 import { getExercises } from '../services/storage';
 import type { Exercise } from '../types';
+
+const { Title } = Typography;
+
+const columns = [
+  {
+    title: 'Name',
+    dataIndex: 'name',
+    key: 'name',
+    render: (text: string, record: Exercise) => <Link to={`/exercises/${record.id}/edit`}>{text}</Link>,
+  },
+];
 
 const ExerciseListPage: React.FC = () => {
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -18,19 +28,11 @@ const ExerciseListPage: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        Exercises
-      </Typography>
-      <Button component={Link} to="/exercises/new" variant="contained" color="primary">
-        Add Exercise
+      <Title>Exercises</Title>
+      <Button type="primary" style={{ marginBottom: 16 }}>
+        <Link to="/exercises/new">Add Exercise</Link>
       </Button>
-      <List>
-        {exercises.map(exercise => (
-          <ListItem key={exercise.id} component={Link} to={`/exercises/${exercise.id}/edit`}>
-            <ListItemText primary={exercise.name} />
-          </ListItem>
-        ))}
-      </List>
+      <Table columns={columns} dataSource={exercises} rowKey="id" />
     </>
   );
 };

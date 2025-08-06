@@ -1,31 +1,24 @@
-
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Box, Button, CssBaseline } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Layout as AntLayout, Menu } from 'antd';
+
+const { Header, Content } = AntLayout;
 
 const Layout: React.FC = ({ children }) => {
   return (
-    <>
-      <CssBaseline />
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <RouterLink to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-              Sport Tracker
-            </RouterLink>
-          </Typography>
-          <Button color="inherit" component={RouterLink} to="/exercises">
-            Exercises
-          </Button>
-          <Button color="inherit" component={RouterLink} to="/sessions">
-            Sessions
-          </Button>
-        </Toolbar>
-      </AppBar>
-      <Box component="main" sx={{ p: 3 }}>
-        {children}
-      </Box>
-    </>
+    <AntLayout style={{ minHeight: '100vh' }}>
+      <Header>
+        <div className="logo" />
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
+          <Menu.Item key="1"><Link to="/">Home</Link></Menu.Item>
+          <Menu.Item key="2"><Link to="/exercises">Exercises</Link></Menu.Item>
+          <Menu.Item key="3"><Link to="/sessions">Sessions</Link></Menu.Item>
+        </Menu>
+      </Header>
+      <Content style={{ padding: '0 50px' }}>
+        <div className="site-layout-content" style={{ background: '#fff', padding: 24, minHeight: 280 }}>{children}</div>
+      </Content>
+    </AntLayout>
   );
 };
 

@@ -1,10 +1,11 @@
-
 import React from 'react';
-import { Typography } from '@mui/material';
+import { Typography } from 'antd';
+
+const { Title } = Typography;
 
 const HomePage: React.FC = () => {
   return (
-    <Typography variant="h4">Welcome to Sport Tracker</Typography>
+    <Title>Welcome to Sport Tracker</Title>
   );
 };
 

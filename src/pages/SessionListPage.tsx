@@ -1,9 +1,19 @@
-
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Typography, Button, List, ListItem, ListItemText } from '@mui/material';
+import { Typography, Button, Table } from 'antd';
 import { getSessions } from '../services/storage';
 import type { Session } from '../types';
+
+const { Title } = Typography;
+
+const columns = [
+  {
+    title: 'Date',
+    dataIndex: 'date',
+    key: 'date',
+    render: (text: string, record: Session) => <Link to={`/sessions/${record.id}/edit`}>{new Date(text).toLocaleDateString()}</Link>,
+  },
+];
 
 const SessionListPage: React.FC = () => {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -18,19 +28,11 @@ const SessionListPage: React.FC = () => {
 
   return (
     <>
-      <Typography variant="h4" gutterBottom>
-        Sessions
-      </Typography>
-      <Button component={Link} to="/sessions/new" variant="contained" color="primary">
-        Add Session
+      <Title>Sessions</Title>
+      <Button type="primary" style={{ marginBottom: 16 }}>
+        <Link to="/sessions/new">Add Session</Link>
       </Button>
-      <List>
-        {sessions.map(session => (
-          <ListItem key={session.id} component={Link} to={`/sessions/${session.id}/edit`}>
-            <ListItemText primary={new Date(session.date).toLocaleDateString()} />
-          </ListItem>
-        ))}
-      </List>
+      <Table columns={columns} dataSource={sessions} rowKey="id" />
     </>
   );
 };
