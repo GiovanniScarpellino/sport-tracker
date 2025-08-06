@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
 import ExerciseListPage from './pages/ExerciseListPage';
 import ExerciseFormPage from './pages/ExerciseFormPage';
 import SessionListPage from './pages/SessionListPage';
@@ -12,7 +11,6 @@ const App: React.FC = () => {
     <Router>
       <Layout>
         <Routes>
-          <Route path="/" element={<HomePage />} />
           <Route path="/exercises" element={<ExerciseListPage />} />
           <Route path="/exercises/new" element={<ExerciseFormPage />} />
           <Route path="/exercises/:id/edit" element={<ExerciseFormPage />} />
