@@ -1,8 +1,14 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem; /* Default for larger screens */
   text-align: center;
+}
+
+@media (max-width: 576px) {
+  #root {
+    padding: 1rem; /* Smaller padding for small screens */
+  }
 }
 
 .logo {
@@ -34,7 +40,13 @@
 }
 
 .card {
-  padding: 2em;
+  padding: 2em; /* Default for larger screens */
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 1em; /* Smaller padding for small screens */
+  }
 }
 
 .read-the-docs {
